@@ -729,11 +729,11 @@ function monkeyPatchDOMInsertionMethods() {
 		// Script nodes that do not have text content are not evaluated.
 		// Add a reference of the script to the iframe. If text content is added later, the script is then evaluated.
 		// Clone the empty script to the main document.
-		if (!script.textContent) {
-			const clone = document.importNode(script, true);
-			getInternalReference(iframe.contentDocument, "body").appendChild(script);
-			return clone;
-		}
+		// if (!script.textContent) {
+		// 	const clone = document.importNode(script, true);
+		// 	getInternalReference(iframe.contentDocument, "body").appendChild(script);
+		// 	return clone;
+		// }
 
 		// This function relies on the fact that scripts follow exactly-once execution semantics.
 		// Scripts contain an internal `already started` flag to track whether they have already
