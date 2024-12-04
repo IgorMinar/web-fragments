@@ -45,7 +45,6 @@
 		"prepare": "pnpm build"
 	},
 	"dependencies": {
-		"reframed": "workspace:*"
 	},
 	"devDependencies": {
 		"path-to-regexp": "^6.2.2",
