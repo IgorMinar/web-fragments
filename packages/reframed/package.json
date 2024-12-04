@@ -9,6 +9,7 @@
 	"files": [
 		"dist"
 	],
+
 	"sideEffects": false,
 	"license": "MIT",
 	"devDependencies": {
@@ -21,7 +22,8 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"types:check": "tsc --noEmit"
+		"types:check": "tsc --noEmit",
+		"prepare": "pnpm build"
 	},
 	"author": "Igor Minar <i@igor.dev> (https://igor.dev)",
 	"contributors": [

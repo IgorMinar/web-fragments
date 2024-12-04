@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"outDir": "dist",
-		"rootDir": "src",
+		"rootDir": "..",
 		"declaration": true,
 		"emitDeclarationOnly": true,
 		"target": "ESNext",
