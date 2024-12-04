@@ -17,7 +17,7 @@ export default defineConfig({
 			formats: ["es"],
 		},
 		rollupOptions: {
-			external: ["react", "react-dom", "reframed"],
+			external: ["react", "react-dom"],
 			output: {
 				globals: {
 					react: "React",
@@ -31,10 +31,10 @@ export default defineConfig({
 			// cross-repo development only!
 			// requires writable-dom checked out as a sibling to `reframed`
 			// TODO: this is incorrect here and should be addressed as fragment-elements should be able to be standalone
-			"writable-dom": new URL(
-				"../../../writable-dom/src/index.ts",
-				import.meta.url
-			).pathname,
+			// "writable-dom": new URL(
+			// 	"../../../writable-dom/src/index.ts",
+			// 	import.meta.url
+			// ).pathname,
 			"reframed": new URL(
 				"../reframed/index.ts",
 				import.meta.url
