@@ -354,7 +354,7 @@ function monkeyPatchIFrameEnvironment(
 		body: {
 			get: () => {
 				// TODO should we enforce that there is a BODY-like element under reframedContainer?
-				return shadowRoot.firstElementChild;
+				return shadowRoot.querySelector('wf-body') ?? [...shadowRoot.children].find((c) => c.childElementCount > 0);
 			},
 		},
 
