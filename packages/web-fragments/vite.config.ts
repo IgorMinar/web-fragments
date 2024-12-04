@@ -35,6 +35,10 @@ export default defineConfig({
 				"../../../writable-dom/src/index.ts",
 				import.meta.url
 			).pathname,
+			"reframed": new URL(
+				"../reframed/index.ts",
+				import.meta.url
+			).pathname,
 		},
 	},
 });
