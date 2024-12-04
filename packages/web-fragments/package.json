@@ -5,15 +5,15 @@
 	"exports": {
 			"./gateway": {
 				"import": "./dist/gateway.js",
-				"types": "./dist/gateway/index.d.ts"
+				"types": "./dist/web-fragments/src/gateway/index.d.ts"
 			},
 			"./gateway/middlewares/cloudflare-pages": {
 				"import": "./dist/gateway/middlewares/cloudflare-pages.js",
-				"types": "./dist/gateway/middlewares/cloudflare-pages/index.d.ts"
+				"types": "./dist/web-fragments/src/gateway/middlewares/cloudflare-pages/index.d.ts"
 			},
 			"./elements": {
 				"import": "./dist/elements.js",
-				"types": "./dist/elements/index.d.ts"
+				"types": "./dist/web-fragments/src/elements/index.d.ts"
 			}
 		},
 	"publishConfig": {
@@ -32,7 +32,7 @@
 			}
 		}
 	},
-	"version": "0.1.1+ngbe.1",
+	"version": "0.1.1+ngbe.2",
 	"files": [
 		"dist"
 	],
