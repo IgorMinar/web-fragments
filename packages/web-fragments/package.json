@@ -4,13 +4,16 @@
 	"type": "module",
 	"exports": {
 			"./gateway": {
-				"import": "./dist/gateway.js"
+				"import": "./dist/gateway.js",
+				"types": "./dist/gateway/index.d.ts"
 			},
 			"./gateway/middlewares/cloudflare-pages": {
-				"import": "./dist/gateway/middlewares/cloudflare-pages.js"
+				"import": "./dist/gateway/middlewares/cloudflare-pages.js",
+				"types": "./dist/gateway/middlewares/cloudflare-pages/index.d.ts"
 			},
 			"./elements": {
-				"import": "./dist/elements.js"
+				"import": "./dist/elements.js",
+				"types": "./dist/elements/index.d.ts"
 			}
 		},
 	"publishConfig": {
