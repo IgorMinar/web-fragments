@@ -5,6 +5,8 @@ export default defineConfig({
 	plugins: [react()],
 	build: {
 		emptyOutDir: false,
+		minify: false,
+		sourcemap: true,
 		lib: {
 			entry: {
 				gateway: new URL("src/gateway/index.ts", import.meta.url).pathname,

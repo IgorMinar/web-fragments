@@ -3,19 +3,19 @@
 	"description": "",
 	"type": "module",
 	"exports": {
-			"./gateway": {
-				"import": "./dist/gateway.js",
-				"types": "./dist/web-fragments/src/gateway/index.d.ts"
-			},
-			"./gateway/middlewares/cloudflare-pages": {
-				"import": "./dist/gateway/middlewares/cloudflare-pages.js",
-				"types": "./dist/web-fragments/src/gateway/middlewares/cloudflare-pages/index.d.ts"
-			},
-			"./elements": {
-				"import": "./dist/elements.js",
-				"types": "./dist/web-fragments/src/elements/index.d.ts"
-			}
+		"./gateway": {
+			"import": "./dist/gateway.js",
+			"types": "./dist/web-fragments/src/gateway/index.d.ts"
 		},
+		"./gateway/middlewares/cloudflare-pages": {
+			"import": "./dist/gateway/middlewares/cloudflare-pages.js",
+			"types": "./dist/web-fragments/src/gateway/middlewares/cloudflare-pages/index.d.ts"
+		},
+		"./elements": {
+			"import": "./dist/elements.js",
+			"types": "./dist/web-fragments/src/elements/index.d.ts"
+		}
+	},
 	"publishConfig": {
 		"exports": {
 			"./gateway": {
@@ -32,7 +32,7 @@
 			}
 		}
 	},
-	"version": "0.1.1+ngbe.3",
+	"version": "0.1.1+ngbe.4",
 	"files": [
 		"dist"
 	],
@@ -47,8 +47,7 @@
 		"types": "pnpm run --filter web-fragments --parallel \"/^types:(?!check).*/\"",
 		"prepare": "pnpm types && pnpm build"
 	},
-	"dependencies": {
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"path-to-regexp": "^6.2.2",
 		"@vitejs/plugin-react": "^4.3.1",

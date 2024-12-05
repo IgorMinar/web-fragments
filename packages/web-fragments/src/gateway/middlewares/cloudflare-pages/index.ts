@@ -25,6 +25,7 @@ export function getMiddleware(
 	const { additionalHeaders = {}, mode = "development" } = options;
 
 	return async ({ request, next }) => {
+		// x: this should return an array of fragments (0..n)
 		const matchedFragment = gateway.matchRequestToFragment(request);
 
 		if (matchedFragment) {
