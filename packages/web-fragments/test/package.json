@@ -1,0 +1,10 @@
+{
+	"private": true,
+	"name": "wf-tests",
+	"dependencies": {
+		"vite": "^5.3.3"
+	},
+	"scripts": {
+		"dev": "vite dev"
+	}
+}
