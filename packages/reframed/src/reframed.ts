@@ -48,7 +48,7 @@ export function reframed(
 
 	const reframedContainerShadowRoot = Object.assign(
 		reframedContainer.shadowRoot ??
-			reframedContainer.attachShadow({ mode: "open" }),
+		reframedContainer.attachShadow({ mode: "open" }),
 		{
 			[reframedMetadataSymbol]: reframeMetadata,
 		}
@@ -128,10 +128,9 @@ async function reframeWithFetch(
 		reframedHtmlResponse.status === 200
 			? reframedHtmlResponse.body!
 			: stringToStream(
-					`error fetching ${reframedSrc} (HTTP Status = ${
-						reframedHtmlResponse.status
-					})<hr>${await reframedHtmlResponse.text()}`
-				);
+				`error fetching ${reframedSrc} (HTTP Status = ${reframedHtmlResponse.status
+				})<hr>${await reframedHtmlResponse.text()}`
+			);
 
 	const { promise, resolve } = Promise.withResolvers<void>();
 
@@ -426,7 +425,7 @@ function monkeyPatchIFrameEnvironment(
 	// We rely on each reframed context having its own instance of this constructor
 	// so we can use an instanceof check to avoid double-handling the event inside
 	// the same context it was dispatched from.
-	class SyntheticPopStateEvent extends PopStateEvent {}
+	class SyntheticPopStateEvent extends PopStateEvent { }
 
 	const historyProxy = new Proxy(mainWindow.history, {
 		get(target, property, receiver) {
@@ -491,19 +490,19 @@ function monkeyPatchIFrameEnvironment(
 		| "createTextNode"
 		| "createTreeWalker"
 	>)[] = [
-		"createAttributeNS",
-		"createCDATASection",
-		"createComment",
-		"createDocumentFragment",
-		"createEvent",
-		"createExpression",
-		"createNSResolver",
-		"createNodeIterator",
-		"createProcessingInstruction",
-		"createRange",
-		"createTextNode",
-		"createTreeWalker",
-	];
+			"createAttributeNS",
+			"createCDATASection",
+			"createComment",
+			"createDocumentFragment",
+			"createEvent",
+			"createExpression",
+			"createNSResolver",
+			"createNodeIterator",
+			"createProcessingInstruction",
+			"createRange",
+			"createTextNode",
+			"createTreeWalker",
+		];
 	for (const createProperty of domCreateProperties) {
 		Object.defineProperty(iframeDocument, createProperty, {
 			value: function reframedCreateFn() {
@@ -683,7 +682,7 @@ function monkeyPatchHistoryAPI() {
 			// QwikCity tries to monkey-patch `pushState` and `replaceState` which results in a runtime error:
 			//   TypeError: Cannot set property pushState of #<History> which only has a getter
 			// https://github.com/QwikDev/qwik/blob/3c5e5a7614c3f64cbf89f1304dd59609053eddf0/packages/qwik-city/runtime/src/spa-init.ts#L127-L135
-			set: () => {},
+			set: () => { },
 			get: () => {
 				return function reframedHistoryGetter() {
 					Reflect.apply(originalFn, window.history, arguments);
@@ -729,11 +728,11 @@ function monkeyPatchDOMInsertionMethods() {
 		// Script nodes that do not have text content are not evaluated.
 		// Add a reference of the script to the iframe. If text content is added later, the script is then evaluated.
 		// Clone the empty script to the main document.
-		// if (!script.textContent) {
-		// 	const clone = document.importNode(script, true);
-		// 	getInternalReference(iframe.contentDocument, "body").appendChild(script);
-		// 	return clone;
-		// }
+		if (!script.textContent) {
+			const clone = document.importNode(script, true);
+			getInternalReference(iframe.contentDocument, "body").appendChild(script);
+			return clone;
+		}
 
 		// This function relies on the fact that scripts follow exactly-once execution semantics.
 		// Scripts contain an internal `already started` flag to track whether they have already
