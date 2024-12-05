@@ -1,5 +1,6 @@
 import { reframed } from "reframed";
 
+// TODO: separate concerns for piercing ops and client-side
 export class FragmentHost extends HTMLElement {
 	iframe: HTMLIFrameElement | undefined;
 	ready: Promise<void> | undefined;
@@ -19,13 +20,19 @@ export class FragmentHost extends HTMLElement {
 		if (!this.isInitialized) {
 			this.isInitialized = true;
 
-			const { iframe, ready } = reframed(
-				this.shadowRoot ?? document.location.href,
-				{
-					container: this,
-					headers: { "x-fragment-mode": "embedded" },
-				}
-			);
+			const fragmentSrc = this.getAttribute("src");
+
+			if (!fragmentSrc) {
+				throw new Error(
+					"💥 fragment-host[src] attribute is required! Missing on element: " +
+						this.outerHTML
+				);
+			}
+			// shadowRoot applies to piercing when we are reusing an existing shadowroot created by declarative shadow dom
+			const { iframe, ready } = reframed(this.shadowRoot ?? fragmentSrc, {
+				container: this,
+				headers: { "x-fragment-mode": "embedded" },
+			});
 
 			this.iframe = iframe;
 			this.ready = ready;
