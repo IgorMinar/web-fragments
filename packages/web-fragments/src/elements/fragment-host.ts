@@ -7,9 +7,40 @@ export class FragmentHost extends HTMLElement {
 	isInitialized = false;
 	isPortaling = false;
 
+	#src: string | null = null;
+	#routable: boolean | null = null;
+
 	constructor() {
 		super();
 		this.handlePiercing = this.handlePiercing.bind(this);
+		if (this.hasAttribute('src')) {
+			this.#src = this.getAttribute('src');
+		}
+	}
+
+	get src(): string | null {
+		return this.#src;
+	}
+
+	set src(value: string) {
+		// TODO: consider making it possible to reload a fragment by updating src
+		if (this.#src) throw new Error('fragment-host[src] cannot be modified' + this.#src + value);
+		this.#src = value;
+		if (!this.hasAttribute('src')) {
+			this.setAttribute('src', value);
+		}
+	}
+
+	get routable() {
+		return this.#routable;
+	}
+
+	static observedAttributes = ['src'];
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (this.#src && this.#src !== newValue)
+			throw new Error('fragment src cannot be modified' + oldValue + newValue + this.#src);
+		this.#src = newValue;
 	}
 
 	async connectedCallback() {
@@ -20,15 +51,28 @@ export class FragmentHost extends HTMLElement {
 		if (!this.isInitialized) {
 			this.isInitialized = true;
 
-			const fragmentSrc = this.getAttribute('src');
+			// read src
+			let fragmentSrc = this.getAttribute('src') ?? this.src;
 
 			if (!fragmentSrc) {
-				throw new Error('💥 fragment-host[src] attribute is required! Missing on element: ' + this.outerHTML);
+				throw new Error(
+					'💥 fragment-host[src] property or attribute is required! Missing on element: ' + this.outerHTML,
+				);
 			}
+
+			// initialize routable fragment
+			if (fragmentSrc === '*') {
+				this.#routable = true;
+				fragmentSrc = location.href;
+			} else {
+				this.#routable = false;
+			}
+
 			// shadowRoot applies to piercing when we are reusing an existing shadowroot created by declarative shadow dom
 			const { iframe, ready } = reframed(this.shadowRoot ?? fragmentSrc, {
 				container: this,
 				headers: { 'x-fragment-mode': 'embedded' },
+				routable: this.#routable,
 			});
 
 			this.iframe = iframe;
