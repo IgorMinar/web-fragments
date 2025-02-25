@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 const { beforeEach, step } = test;
 import { failOnBrowserErrors } from '../playwright.utils';
 
-//beforeEach(failOnBrowserErrors);
+beforeEach(failOnBrowserErrors);
 
 test('dom isolation of fragments', async ({ page }) => {
 	await page.goto('/dom-isolation/');
