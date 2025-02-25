@@ -8,7 +8,7 @@
 		<h2>script-isolation fragment B</h2>
 		<p>Document Title:</p>
 		<script type="module">
-			document.querySelector('p').textContent += document.title;
+			document.querySelector('p').textContent += ' '  + document.title;
 			window.SCRIPT_ISOLATION_MARKER = '🅱';
 		</script>
 	</body>
