@@ -1,5 +1,12 @@
 # node-servers-client
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`816e88b`](https://github.com/web-fragments/web-fragments/commit/816e88b187d91e76032dc3c7d015a971810708d9)]:
+  - web-fragments@0.4.0
+
 ## 1.0.1
 
 ### Patch Changes
