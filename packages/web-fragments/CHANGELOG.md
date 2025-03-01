@@ -1,5 +1,17 @@
 # web-fragments
 
+## 0.4.0
+
+### Minor Changes
+
+- [#139](https://github.com/web-fragments/web-fragments/pull/139) [`816e88b`](https://github.com/web-fragments/web-fragments/commit/816e88b187d91e76032dc3c7d015a971810708d9) Thanks [@IgorMinar](https://github.com/IgorMinar)! - fix(gateway): prefix <html>, <head>, and <body> tags in fragment response as <wf-html>, <wf-head>, and <wf-body>
+
+  The gateway now rewrites fragment html so that any <html>, <head>, and <body> tags are replaced with <wf-html>, <wf-head>, and <wf-body> tags.
+
+  DOM doesn't allow duplicates of these three elements in the document, and the main document already contains them.
+
+  We need to replace these tags, to prevent the DOM from silently dropping them when the content is added to the main document.
+
 ## 0.3.0
 
 ### Minor Changes
