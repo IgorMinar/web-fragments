@@ -21,19 +21,19 @@
 		</script>
 
 		<button id="remove">remove fragment</button>
-		<button id="reset">reset fragment src</button>
+		<!-- <button id="reset">reset fragment src</button> -->
 		<button id="add">add fragment</button>
 
-		<fragment-host src="/fragment-destruction/fragment"></fragment-host>
+		<fragment-host></fragment-host>
 
 		<script type="module">
 			document.querySelector('button#remove').addEventListener('click', (event) => {
 				document.querySelector('fragment-host')?.remove();
 			});
 
-			document.querySelector('button#reset').addEventListener('click', (event) => {
-				document.querySelector('fragment-host').src = '';
-			});
+			// document.querySelector('button#reset').addEventListener('click', (event) => {
+			// 	document.querySelector('fragment-host').src = '';
+			// });
 
 			let fragmentCounter = 0;
 			document.querySelector('button#add').addEventListener('click', (event) => {

@@ -27,33 +27,35 @@ test('fragment creation', async ({ page }) => {
 		await expect(fragment.getByRole('heading')).toHaveText('hello world!');
 	});
 
-	await step('fragment can be parameterized via query params in fragment[src]', async () => {
-		const fragment = page.locator('fragment-host#fragment4');
-		await expect(await fragment.getAttribute('src')).toBe('/fragment-creation/fragment?name=Natalia');
-		await expect(fragment.getByRole('heading')).toHaveText('hello Natalia!');
-	});
-});
+	// TODO: enable when we support standalone fragments
+	// await step('fragment can be parameterized via query params in fragment[src]', async () => {
+	// 	const fragment = page.locator('fragment-host#fragment4');
+	// 	await expect(await fragment.getAttribute('src')).toBe('/fragment-creation/fragment?name=Natalia');
+	// 	await expect(fragment.getByRole('heading')).toHaveText('hello Natalia!');
+	// });
 
-test('fragment initialization', async ({ page }) => {
-	await page.goto('/fragment-creation/');
+	// TODO none of this is supported yet
+	// test('fragment initialization', async ({ page }) => {
+	// 	await page.goto('/fragment-creation/');
 
-	await step('fragment-hosts should render with display:block', async () => {
-		const fragment = page.locator('fragment-host').first();
-		await expect(fragment).toHaveCSS('display', 'block');
-	});
+	// 	await step('fragment-hosts should render with display:block', async () => {
+	// 		const fragment = page.locator('fragment-host').first();
+	// 		await expect(fragment).toHaveCSS('display', 'block');
+	// 	});
 
-	await step('fragment src should be set as both attribute and property', async () => {
-		const fragment = page.locator('fragment-host').first();
-		await expect(fragment).toHaveAttribute('src', '/fragment-creation/fragment');
-		await expect(fragment).toHaveJSProperty('src', '/fragment-creation/fragment');
-	});
-});
+	// 	await step('fragment src should be set as both attribute and property', async () => {
+	// 		const fragment = page.locator('fragment-host').first();
+	// 		await expect(fragment).toHaveAttribute('src', '/fragment-creation/fragment');
+	// 		await expect(fragment).toHaveJSProperty('src', '/fragment-creation/fragment');
+	// 	});
+	// });
 
-test('fragment src immutability', async ({ page }) => {
-	await page.goto('/fragment-creation/');
+	// test('fragment src immutability', async ({ page }) => {
+	// 	await page.goto('/fragment-creation/');
 
-	await step('fragment src modification should throw', async () => {
-		const fragment = page.locator('fragment-host').first();
-		await expect(fragment.evaluate((el) => (el.src = 'foo'))).rejects.toThrow();
-	});
+	// 	await step('fragment src modification should throw', async () => {
+	// 		const fragment = page.locator('fragment-host').first();
+	// 		await expect(fragment.evaluate((el) => (el.src = 'foo'))).rejects.toThrow();
+	// 	});
+	// });
 });

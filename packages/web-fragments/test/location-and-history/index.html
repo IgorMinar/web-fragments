@@ -32,11 +32,12 @@
 			});
 		</script>
 
-		<!-- regular fragment -->
-		<fragment-host fid="/location-and-history/fragment"></fragment-host>
+		<!-- bound fragment -->
+		<fragment-host></fragment-host>
 
 		<!-- standalone fragment -->
-		<fragment-host fid="/location-and-history/standalone" standalone></fragment-host>
+		<!-- TODO: commented out for now since we don't support standalone fragments yet -->
+		<!-- <fragment-host src="/location-and-history/standalone"></fragment-host> -->
 
 		<script type="module">
 			import { register } from 'web-fragments/elements';

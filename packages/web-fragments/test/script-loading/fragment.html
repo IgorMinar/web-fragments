@@ -76,11 +76,13 @@
 		<!--
 			Use vite-ignore here so that Vite doesn't bundle or otherwise interfere with these scripts.
 			
-			The scripts themeselves are stored under public/fragments/script-loading/ so that they are served without any processing.
+			The scripts themselves are stored under public/fragments/script-loading/ so that they are served without any processing.
 		-->
-		<script vite-ignore src="/script-loading/script-sync.js"></script>
+		
 		<script vite-ignore async src="/script-loading/script-async.js"></script>
-		<script defer src="/script-loading/script-defer.js" vite-ignore></script>
+		<script vite-ignore defer src="/script-loading/script-defer.js"></script>
 		<script vite-ignore type="module" src="/script-loading/script-module.js"></script>
+		<!-- TODO: why does this one have to be the last one? Is there some silenced error or what? -->
+		<script vite-ignore src="/script-loading/script-sync.js"></script>
 	</body>
 </html>

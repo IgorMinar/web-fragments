@@ -1,7 +1,10 @@
-import { defineConfig } from 'vite';
+import { defineConfig, ViteDevServer, PreviewServer } from 'vite';
 import { glob } from 'glob';
 import fs from 'node:fs/promises';
 import http from 'node:http';
+import path from 'node:path';
+import { FragmentGateway } from '../src/gateway';
+import { getNodeMiddleware } from '../src/gateway/middleware/node';
 
 export default defineConfig({
 	appType: 'mpa',
@@ -31,51 +34,74 @@ export default defineConfig({
 	plugins: [
 		{
 			name: 'web-fragments-middleware',
-			configureServer: (server) => {
-				server.middlewares.use(fragmentGatewayMiddleware);
-			},
-			configurePreviewServer: (server) => {
-				server.middlewares.use(fragmentGatewayMiddleware);
-			},
+			configureServer: configureGatewayMiddleware,
+			configurePreviewServer: configureGatewayMiddleware,
 		},
 	],
 });
 
-async function fragmentGatewayMiddleware(req: http.IncomingMessage, res: http.ServerResponse, next: Function) {
-	const fid = req.headers['x-fragment-id'];
-	if (fid && req.headers['sec-fetch-dest'] === 'empty') {
-		res.setHeader('Vary', 'Sec-Fetch-Dest');
-		res.setHeader('Content-Type', 'text/html');
-		res.end(await fs.readFile(new URL(`.${fid}.html`, import.meta.url)));
-		return;
-	}
+async function configureGatewayMiddleware(server: ViteDevServer | PreviewServer) {
+	let serverUrl: string;
 
-	// if the server is receiving a request from an iframe, then it's because a iframe used for reframing is initializing
-	// feed it with an empty document so that location.href is set correctly, but no other scripts load in this iframe
-	if (req.headers['sec-fetch-dest'] === 'iframe') {
-		res.setHeader('Vary', 'Sec-Fetch-Dest');
-		res.setHeader('Content-Type', 'text/html');
-		res.end('<!doctype html><title>');
-		return;
-	}
+	server.httpServer!.once('listening', () => {
+		const addressInfo = server.httpServer!.address()!;
 
-	if (req.headers['sec-fetch-dest'] === 'document') {
-		if (req.url === '/location-and-history/') {
-			res.setHeader('Vary', 'Sec-Fetch-Dest');
-		}
-		next();
-		return;
-	}
-
-	// rewrite
-	if (req.headers['sec-fetch-dest'] === 'empty') {
-		if (req.url?.startsWith('/location-and-history/')) {
-			res.setHeader('Vary', 'Sec-Fetch-Dest');
-			res.setHeader('Content-Type', 'text/html');
-			res.end(await fs.readFile(new URL('./location-and-history/routable.html', import.meta.url)));
+		if (typeof addressInfo === 'string') {
+			serverUrl = addressInfo;
 			return;
 		}
-	}
 
-	next();
+		const protocol = server.config.server.https ? 'https' : 'http';
+		const host =
+			addressInfo.address === '::' || addressInfo.address === '::1' || addressInfo.address === '0.0.0.0'
+				? 'localhost'
+				: addressInfo.address;
+		const port = addressInfo.port;
+
+		serverUrl = `${protocol}://${host}:${port}`;
+	});
+
+	const getServerUrl = () => {
+		if (!serverUrl) {
+			throw new Error('Vite Server URL not yet available');
+		}
+
+		return serverUrl;
+	};
+
+	const fragmentGatewayMiddleware = await getFragmentGatewayMiddleware(getServerUrl);
+	server.middlewares.use(fragmentGatewayMiddleware);
+}
+
+async function getFragmentGatewayMiddleware(getServerUrl: () => string) {
+	const fragmentGateway = new FragmentGateway();
+	(await glob('**/', { ignore: ['dist/**', 'public/**', 'node_modules/**', 'gateway/**'] })).forEach((appDir) => {
+		if (appDir === '.') return;
+
+		const fragmentId = path.basename(appDir);
+
+		fragmentGateway.registerFragment({
+			fragmentId: fragmentId,
+			piercing: false,
+			routePatterns: [`/${fragmentId}/:_*`],
+			get endpoint() {
+				return getServerUrl();
+			},
+			prePiercingClassNames: [],
+		});
+	});
+
+	const fragmentGatewayMiddleware = getNodeMiddleware(fragmentGateway);
+
+	return function fragmentViteMiddleware(req: http.IncomingMessage, res: http.ServerResponse, next: () => void) {
+		// if the request is from the gateway middleware then bypass the gateway middleware and serve the request from Vite directly
+		if (req.headers['x-fragment-mode']) {
+			if (req.url?.endsWith('/')) {
+				req.url = req.url + 'fragment.html';
+			}
+			return next();
+		}
+
+		return fragmentGatewayMiddleware(req, res, next);
+	};
 }

@@ -21,7 +21,7 @@ export class FragmentHost extends HTMLElement {
 
 			const { iframe, ready } = reframed(this.shadowRoot ?? document.location.href, {
 				container: this,
-				headers: { 'x-fragment-mode': 'embedded', 'x-fragment-id': fragmentId },
+				headers: { 'x-fragment-mode': 'embedded' },
 			});
 
 			this.iframe = iframe;

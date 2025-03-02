@@ -12,7 +12,7 @@ test('dom isolation of fragments', async ({ page }) => {
 		await expect(page.locator('h1')).toHaveText('WF TestBed: dom-isolation');
 	});
 
-	const fragment = page.locator('fragment-host[src="/dom-isolation/fragment"]');
+	const fragment = page.locator('fragment-host');
 
 	await step('ensure the dom-isolation fragment renders', async () => {
 		await expect(fragment.getByRole('heading')).toHaveText('dom-isolation fragment');

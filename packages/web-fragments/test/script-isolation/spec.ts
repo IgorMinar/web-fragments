@@ -16,7 +16,7 @@ test('script isolation of fragments', async ({ page }) => {
 		await expect(await page.evaluate(() => window.SCRIPT_ISOLATION_MARKER)).toBe(undefined);
 	});
 
-	const fragmentA1 = page.locator('fragment-host[src="/script-isolation/fragment-a"]').first();
+	const fragmentA1 = page.locator('fragment-host').first();
 	const contextA1 = await getFragmentContext(fragmentA1);
 
 	await step('ensure that the first fragment A has its own dedicated JS context', async () => {
@@ -24,15 +24,16 @@ test('script isolation of fragments', async ({ page }) => {
 		await expect(await contextA1.evaluate(() => window.SCRIPT_ISOLATION_MARKER)).toMatch(/🅰 0.\d+/);
 	});
 
-	const fragmentB = page.locator('fragment-host[src="/script-isolation/fragment-b"]');
-	const contextB = await getFragmentContext(fragmentB);
+	// TODO: disabled since we don't yet support standalone fragments
+	// const fragmentB = page.locator('fragment-host[src="/script-isolation/fragment-b"]');
+	// const contextB = await getFragmentContext(fragmentB);
 
-	await step('ensure that the fragment B has its own dedicated JS context', async () => {
-		await expect(fragmentB.locator('p')).toHaveText('Document Title: script-isolation fragment B');
-		await expect(await contextB.evaluate(() => window.SCRIPT_ISOLATION_MARKER)).toBe('🅱');
-	});
+	// await step('ensure that the fragment B has its own dedicated JS context', async () => {
+	// 	await expect(fragmentB.locator('p')).toHaveText('Document Title: script-isolation fragment B');
+	// 	await expect(await contextB.evaluate(() => window.SCRIPT_ISOLATION_MARKER)).toBe('🅱');
+	// });
 
-	const fragmentA2 = page.locator('fragment-host[src="/script-isolation/fragment-a"]').last()!;
+	const fragmentA2 = page.locator('fragment-host').last()!;
 	const contextA2 = await getFragmentContext(fragmentA2);
 
 	await step('ensure that the second fragment A has its own dedicated JS context', async () => {

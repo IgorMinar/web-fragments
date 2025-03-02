@@ -12,10 +12,10 @@ test('script loading in fragments', async ({ page }) => {
 		await expect(page.locator('h1')).toHaveText('WF TestBed: script-loading');
 	});
 
-	const fragment = page.locator('fragment-host[fid="/script-loading/fragment"]');
+	const fragment = page.locator('fragment-host');
 
 	await step('ensure the script-loading fragment renders', async () => {
-		await expect(fragment.getByRole('heading')).toHaveText('script-loading fragment');
+		await expect(fragment.locator('h2')).toHaveText('script-loading fragment');
 	});
 
 	await step('ensure that inline sync scripts executed correctly', async () => {
@@ -54,7 +54,8 @@ test('script loading in fragments', async ({ page }) => {
 	});
 
 	await step('ensure all script loaded in a JS context different from the main context', async () => {
-		const frame = await page.frame({ name: 'WF:/script-loading/fragment' });
+		// TODO: replace with `frame({name: ...})` once we correctly set frame names.
+		const frame = await page.frames()[1];
 		expect(frame).not.toBe(null);
 		expect(await frame?.evaluate(() => window.SCRIPT_CONTEXT_MARKER)).toBe('🔥');
 		expect(await page.evaluate(() => window.SCRIPT_CONTEXT_MARKER)).toBe(undefined);

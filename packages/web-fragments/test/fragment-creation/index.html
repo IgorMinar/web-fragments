@@ -6,6 +6,8 @@
 		<style>
 			fragment-host {
 				border: 1px red dashed;
+				/* TODO: this should be set by fragment-host */
+				display: block;
 			}
 		</style>
 	</head>
@@ -17,12 +19,11 @@
 			register();
 		</script>
 
-		<fragment-host fid="/fragment-creation/fragment"></fragment-host>
+		<fragment-host></fragment-host>
 
 		<script type="module">
 			const fragment2 = document.createElement('fragment-host');
 			fragment2.id = 'fragment2';
-			fragment2.fid = '/fragment-creation/fragment';
 			document.body.appendChild(fragment2);
 		</script>
 
@@ -31,17 +32,18 @@
 
 			const fragment3 = new FragmentHost();
 			fragment3.id = 'fragment3';
-			fragment3.fid = '/fragment-creation/fragment';
 			document.body.appendChild(fragment3);
 		</script>
 
+		<!-- 		
+		TODO: enable when we support standalone fragments
 		<script type="module">
 			import { FragmentHost } from 'web-fragments/elements';
 
 			const fragment4 = new FragmentHost();
 			fragment4.id = 'fragment4';
-			fragment4.fid = '/fragment-creation/fragment';
+			fragment4.src = '/fragment-creation/fragment?name=Natalia';
 			document.body.appendChild(fragment4);
-		</script>
+		</script> -->
 	</body>
 </html>
