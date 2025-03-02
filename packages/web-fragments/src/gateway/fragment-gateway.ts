@@ -38,6 +38,9 @@ export class FragmentGateway {
 			);
 		}
 
+		// default to true
+		fragmentConfig.piercing ??= true;
+
 		this.fragmentConfigs.set(fragmentConfig.fragmentId, fragmentConfig);
 
 		// create a reverse mapping of route patterns to fragment configs
@@ -72,6 +75,14 @@ export interface FragmentConfig {
 	 * Unique Id for the fragment.
 	 */
 	fragmentId: string;
+
+	/**
+	 * Whether the fragment should be pierced by the gateway on the server-side.
+	 *
+	 * Defaults to true.
+	 */
+	piercing?: boolean;
+
 	/**
 	 * Styles to apply to the fragment before it gets pierced, their purpose
 	 * is to style the fragment in such a way to make it look as close as possible
