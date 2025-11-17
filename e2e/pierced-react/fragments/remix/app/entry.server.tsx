@@ -24,6 +24,26 @@ export default function handleRequest(
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	loadContext: AppLoadContext,
 ) {
+	console.log('igor and natalia were vibe coding here!!!')
+	
+	// Handle OPTIONS preflight requests immediately
+	if (request.method === 'OPTIONS') {
+		return new Response(null, {
+			status: 200,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+				'Access-Control-Allow-Headers': 'Content-Type,upgrade-insecure-requests,x-forwarded-host,x-forwarded-proto,x-fragment-mode,x-wf-fetch-dest',
+				'Access-Control-Max-Age': '86400', // 24 hours
+			},
+		});
+	}
+	
+	// Add CORS headers to all responses
+	responseHeaders.set("Access-Control-Allow-Origin", "*");
+	responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+	responseHeaders.set("Access-Control-Allow-Headers", "Content-Type,upgrade-insecure-requests,x-forwarded-host,x-forwarded-proto,x-fragment-mode,x-wf-fetch-dest");
+	
 	return isbot(request.headers.get('user-agent') || '')
 		? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)
 		: handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext);

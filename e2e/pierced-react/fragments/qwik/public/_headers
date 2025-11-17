@@ -8,3 +8,9 @@
   Content-Type: application/javascript
   X-Content-Type-Options: nosniff
   Service-Worker-Allowed : /
+
+/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+  Access-Control-Allow-Headers: Content-Type,upgrade-insecure-requests,x-forwarded-host,x-forwarded-proto,x-fragment-mode,x-wf-fetch-dest
+  Access-Control-Max-Age: 86400

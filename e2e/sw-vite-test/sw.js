@@ -6,7 +6,7 @@ const appOrigin = self.location.origin;
 // Register fragments with the gateway
 gateway.registerFragment({
 	fragmentId: 'remix',
-	endpoint: 'http://localhost:5174',
+	endpoint: 'http://localhost:3000',
 	piercing: true,
 	routePatterns: [
 		'/remix-page',
@@ -26,7 +26,7 @@ gateway.registerFragment({
 
 gateway.registerFragment({
 	fragmentId: 'qwik',
-	endpoint: 'http://localhost:5173',
+	endpoint: 'http://localhost:8123',
 	piercing: true,
 	forwardFragmentHeaders: ['x-fragment-name'],
 	routePatterns: ['/qwik-page', '/qwik-page/:_*', '/_fragment/qwik/:_*'],
@@ -123,8 +123,7 @@ self.addEventListener('fetch', (event) => {
 					navDestination === 'document' &&
 					secFetchUser !== '?1' &&
 					clientFrameType === 'nested';
-				const isIframeNavigation =
-					destHeader === 'iframe' || requestDestination === 'iframe' || clientFrameType === 'nested' || nonUserNavigate;
+				const isIframeNavigation = destHeader === 'iframe' || requestDestination === 'iframe';
 
 				let requestForMiddleware = event.request;
 				if (isIframeNavigation) {

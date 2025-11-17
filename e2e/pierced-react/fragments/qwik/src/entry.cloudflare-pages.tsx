@@ -16,6 +16,24 @@ declare global {
 	interface QwikCityPlatform extends PlatformCloudflarePages {}
 }
 
-const fetch = createQwikCity({ render, qwikCityPlan, manifest });
+const fetch = (request: Request, env: any, ctx: any) => {
+	console.log('igor and natalia were vibe coding here!!!')
+
+
+	// Handle OPTIONS preflight requests immediately
+	if (request.method === 'OPTIONS') {
+		return new Response(null, {
+			status: 200,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+				'Access-Control-Allow-Headers': 'Content-Type,upgrade-insecure-requests,x-forwarded-host,x-forwarded-proto,x-fragment-mode,x-wf-fetch-dest',
+				'Access-Control-Max-Age': '86400', // 24 hours
+			},
+		});
+	}
+
+	return createQwikCity({ render, qwikCityPlan, manifest })(request, env, ctx);
+}
 
 export { fetch };

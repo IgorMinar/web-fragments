@@ -6,7 +6,9 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"serve": "node server.js"
+		"serve": "node server.js",
+		"buildAndServe": "pnpm build && pnpm serve",
+		"start": "pnpm --filter sw-vite-test --filter pierced-react___remix-fragment --filter pierced-react___qwik-fragment run buildAndServe"
 	},
 	"devDependencies": {
 		"vite": "^6.0.7"
